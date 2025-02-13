@@ -15,7 +15,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
-
     private final UserRepository userRepository;
 
     private final JwtUtil jwtUtil;
@@ -26,7 +25,7 @@ public class AuthController {
         this.jwtUtil = jwtUtil;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
-    }
+    }    //can also use field based injection @autowired
 
     @PostMapping("/register")
     public String register(@RequestBody User user) {
