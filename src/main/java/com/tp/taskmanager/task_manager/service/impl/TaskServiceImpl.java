@@ -8,6 +8,7 @@ import com.tp.taskmanager.task_manager.repo.TaskRepository;
 import com.tp.taskmanager.task_manager.repo.UserRepository;
 import com.tp.taskmanager.task_manager.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -59,6 +60,10 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public Tasks updateTask(Long id,Tasks taskDetails) {
         Tasks tasks=taskRepository.findById(id).orElseThrow(()->new RuntimeException("Task not found"));
+        String userName= SecurityContextHolder.getContext().getAuthentication().getName();
+        if(!tasks.getUser().getUsername().equals(userName)){
+            throw new RuntimeException("You are not allowed to modify the task");
+        }
         tasks.setTitle(taskDetails.getTitle());
 //        tasks.setUser(taskDetails.getUser());
         tasks.setDescription(taskDetails.getDescription());
