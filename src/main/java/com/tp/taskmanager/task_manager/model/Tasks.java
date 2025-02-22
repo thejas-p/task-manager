@@ -26,5 +26,12 @@ public class Tasks {
     @JoinColumn(name="user_id")
     private User user;
 
+    @Enumerated(EnumType.STRING)
+    private TaskStatus taskStatus=TaskStatus.PENDING;
+
+    public enum TaskStatus{
+        PENDING, IN_PROGRESS, COMPLETED
+    }
+
 
 }
