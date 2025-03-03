@@ -66,7 +66,7 @@ public class TaskServiceImpl implements TaskService {
         String userName= SecurityContextHolder.getContext().getAuthentication().getName();
         Collection<? extends GrantedAuthority> authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
         boolean isAdmin = authorities.stream().anyMatch(auth -> auth.getAuthority().equals("ROLE_ADMIN"));
-        if(!tasks.getUser().getUsername().equals(userName) || isAdmin){
+        if(!tasks.getUser().getUsername().equals(userName) && !isAdmin){
             throw new RuntimeException("You are not allowed to modify the task"); //only the user can update the task
         }
         tasks.setTitle(taskDetails.getTitle());
