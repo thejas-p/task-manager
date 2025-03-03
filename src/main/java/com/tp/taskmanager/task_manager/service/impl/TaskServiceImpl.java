@@ -63,7 +63,7 @@ public class TaskServiceImpl implements TaskService {
         Tasks tasks=taskRepository.findById(id).orElseThrow(()->new RuntimeException("Task not found"));
         String userName= SecurityContextHolder.getContext().getAuthentication().getName();
         if(!tasks.getUser().getUsername().equals(userName)){
-            throw new RuntimeException("You are not allowed to modify the task");
+            throw new RuntimeException("You are not allowed to modify the task"); //only the user can update the task
         }
         tasks.setTitle(taskDetails.getTitle());
 //        tasks.setUser(taskDetails.getUser());
