@@ -8,9 +8,11 @@ import com.tp.taskmanager.task_manager.repo.TaskRepository;
 import com.tp.taskmanager.task_manager.repo.UserRepository;
 import com.tp.taskmanager.task_manager.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -62,13 +64,16 @@ public class TaskServiceImpl implements TaskService {
     public Tasks updateTask(Long id,Tasks taskDetails) {
         Tasks tasks=taskRepository.findById(id).orElseThrow(()->new RuntimeException("Task not found"));
         String userName= SecurityContextHolder.getContext().getAuthentication().getName();
-        if(!tasks.getUser().getUsername().equals(userName)){
+        Collection<? extends GrantedAuthority> authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+        boolean isAdmin = authorities.stream().anyMatch(auth -> auth.getAuthority().equals("ROLE_ADMIN"));
+        if(!tasks.getUser().getUsername().equals(userName) || isAdmin){
             throw new RuntimeException("You are not allowed to modify the task"); //only the user can update the task
         }
         tasks.setTitle(taskDetails.getTitle());
 //        tasks.setUser(taskDetails.getUser());
         tasks.setDescription(taskDetails.getDescription());
         tasks.setCompleted(taskDetails.isCompleted());
+        tasks.setTaskStatus(taskDetails.getTaskStatus());
         return taskRepository.save(tasks);
     }
 
