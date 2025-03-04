@@ -2,6 +2,8 @@ package com.tp.taskmanager.task_manager.service.impl;
 
 import com.tp.taskmanager.task_manager.dto.TaskDTO;
 import com.tp.taskmanager.task_manager.dto.UserDTO;
+import com.tp.taskmanager.task_manager.exception.InvalidAuthException;
+import com.tp.taskmanager.task_manager.exception.ResourceNotFoundException;
 import com.tp.taskmanager.task_manager.model.Tasks;
 import com.tp.taskmanager.task_manager.model.User;
 import com.tp.taskmanager.task_manager.repo.TaskRepository;
@@ -25,7 +27,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public TaskDTO getTasks(Long id){
-        Tasks tasks = taskRepository.findById(id).orElseThrow(() -> new RuntimeException("Task not found"));
+        Tasks tasks = taskRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Task not found"));
         return convertToDTO(tasks);
     }
 
@@ -54,7 +56,7 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public void deleteTaskById(Long id){
         if (!taskRepository.existsById(id)) {
-            throw new RuntimeException("User not found");
+            throw new ResourceNotFoundException("User not found");
         }
         taskRepository.deleteById(id);
 
@@ -62,12 +64,12 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public Tasks updateTask(Long id,Tasks taskDetails) {
-        Tasks tasks=taskRepository.findById(id).orElseThrow(()->new RuntimeException("Task not found"));
+        Tasks tasks=taskRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Task not found with"+id));
         String userName= SecurityContextHolder.getContext().getAuthentication().getName();
         Collection<? extends GrantedAuthority> authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
         boolean isAdmin = authorities.stream().anyMatch(auth -> auth.getAuthority().equals("ROLE_ADMIN"));
         if(!tasks.getUser().getUsername().equals(userName) && !isAdmin){
-            throw new RuntimeException("You are not allowed to modify the task"); //only the user can update the task
+            throw new InvalidAuthException("No access"); //only the user can update the task
         }
         tasks.setTitle(taskDetails.getTitle());
 //        tasks.setUser(taskDetails.getUser());
