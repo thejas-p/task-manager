@@ -12,5 +12,11 @@ public class TaskDTO {
     private String description;
     private boolean completed;
     private UserDTO user;
+    private TaskStatus taskStatus;
+
+    public enum TaskStatus{
+        PENDING, IN_PROGRESS, COMPLETED
+    }
+
 
 }

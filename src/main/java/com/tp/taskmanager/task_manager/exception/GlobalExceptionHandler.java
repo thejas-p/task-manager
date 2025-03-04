@@ -22,7 +22,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(InvalidAuthException.class)
     public ResponseEntity<?> invalidAuthException(ResourceNotFoundException ex, WebRequest request) {
-        CustomErrorResponse errorResponse = new CustomErrorResponse(LocalDateTime.now(), ex.getMessage(),"You are not authorised");
+        CustomErrorResponse errorResponse = new CustomErrorResponse(LocalDateTime.now(), ex.getMessage(),"You are not authorised to do this action");
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 

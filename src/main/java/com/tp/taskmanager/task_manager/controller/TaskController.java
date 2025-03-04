@@ -36,18 +36,18 @@ public class TaskController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/create")
-    public Tasks createTask(@RequestBody Tasks tasks){
+    public TaskDTO createTask(@RequestBody @Valid Tasks tasks){
         return taskService.createTask(tasks);
 
     }
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteTask(@PathVariable Long id){
         taskService.deleteTaskById(id);
         return ResponseEntity.ok("deleted successfully");
     }
 
-    @PutMapping("/{id}")
-    public Tasks updateTask(@PathVariable Long id, @Valid @RequestBody Tasks tasks){
+    @PutMapping("/update/{id}")
+    public TaskDTO updateTask(@PathVariable Long id, @Valid @RequestBody Tasks tasks){
         return taskService.updateTask(id,tasks);
     }
 }

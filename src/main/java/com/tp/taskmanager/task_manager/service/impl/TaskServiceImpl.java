@@ -44,13 +44,15 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Tasks createTask(Tasks tasks) {
+    public TaskDTO createTask(Tasks tasks) {
 //       String userName= SecurityContextHolder.getContext().getAuthentication().getName();
 //        User user= userRepository.findByUsername(userName).orElseThrow(()->new RuntimeException("user not found"));
 //        tasks.setUser(user);
          // Tasks task=taskRepository.save(tasks);
-        tasks.setTaskStatus(Tasks.TaskStatus.valueOf("PENDING"));
-        return taskRepository.save(tasks);
+     //  tasks.setTaskStatus(Tasks.TaskStatus.valueOf("PENDING")); //to set task as pending by default while creating
+        tasks.setTaskStatus(Tasks.TaskStatus.PENDING);
+//        return taskRepository.save(tasks);
+        return convertToDTO(taskRepository.save(tasks));
     }
 
     @Override
@@ -63,7 +65,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Tasks updateTask(Long id,Tasks taskDetails) {
+    public TaskDTO updateTask(Long id,Tasks taskDetails) {
         Tasks tasks=taskRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Task not found with"+id));
         String userName= SecurityContextHolder.getContext().getAuthentication().getName();
         Collection<? extends GrantedAuthority> authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
@@ -76,7 +78,7 @@ public class TaskServiceImpl implements TaskService {
         tasks.setDescription(taskDetails.getDescription());
         tasks.setCompleted(taskDetails.isCompleted());
         tasks.setTaskStatus(taskDetails.getTaskStatus());
-        return taskRepository.save(tasks);
+        return convertToDTO(taskRepository.save(tasks));
     }
 
     // Method to convert Task entity to TaskDTO
@@ -86,6 +88,7 @@ public class TaskServiceImpl implements TaskService {
         taskDTO.setTitle(task.getTitle());
         taskDTO.setDescription(task.getDescription());
         taskDTO.setCompleted(task.isCompleted());
+        taskDTO.setTaskStatus(TaskDTO.TaskStatus.valueOf(task.getTaskStatus().name()));
 
         User user = task.getUser();
         UserDTO userDTO = new UserDTO();

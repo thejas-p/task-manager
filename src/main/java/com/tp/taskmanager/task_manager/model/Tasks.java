@@ -27,7 +27,7 @@ public class Tasks {
     private User user;
 
     @Enumerated(EnumType.STRING)
-    private TaskStatus taskStatus=TaskStatus.PENDING;
+    private TaskStatus taskStatus; //= TaskStatus.PENDING;
 
     public enum TaskStatus{
         PENDING, IN_PROGRESS, COMPLETED
