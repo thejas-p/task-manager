@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Date;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -25,6 +27,9 @@ public class Tasks {
     @ManyToOne
     @JoinColumn(name="user_id")
     private User user;
+
+    @Temporal(TemporalType.DATE)
+    private Date dueDate;
 
     @Enumerated(EnumType.STRING)
     private TaskStatus taskStatus; //= TaskStatus.PENDING;
