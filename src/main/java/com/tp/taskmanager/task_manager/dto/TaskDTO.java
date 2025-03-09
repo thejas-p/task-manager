@@ -14,6 +14,7 @@ public class TaskDTO {
     private UserDTO user;
     private TaskStatus taskStatus;
 
+
     public enum TaskStatus{
         PENDING, IN_PROGRESS, COMPLETED
     }

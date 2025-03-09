@@ -51,6 +51,7 @@ public class TaskServiceImpl implements TaskService {
          // Tasks task=taskRepository.save(tasks);
      //  tasks.setTaskStatus(Tasks.TaskStatus.valueOf("PENDING")); //to set task as pending by default while creating
         tasks.setTaskStatus(Tasks.TaskStatus.PENDING);
+
 //        return taskRepository.save(tasks);
         return convertToDTO(taskRepository.save(tasks));
     }
