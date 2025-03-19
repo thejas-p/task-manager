@@ -10,6 +10,7 @@ import com.tp.taskmanager.task_manager.repo.TaskRepository;
 import com.tp.taskmanager.task_manager.repo.UserRepository;
 import com.tp.taskmanager.task_manager.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.config.Task;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -80,6 +81,13 @@ public class TaskServiceImpl implements TaskService {
         tasks.setCompleted(taskDetails.isCompleted());
         tasks.setTaskStatus(taskDetails.getTaskStatus());
         return convertToDTO(taskRepository.save(tasks));
+    }
+    @Override
+    public List<TaskDTO> getTasksByStatus(long id, Tasks.TaskStatus status){
+        List<Tasks> tasks = taskRepository.findByUserId(id).stream()
+                .filter(task -> task.getTaskStatus() == status)
+                .collect(Collectors.toList());
+        return tasks.stream().map(this::convertToDTO).collect(Collectors.toList());
     }
 
     // Method to convert Task entity to TaskDTO
