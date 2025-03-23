@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
+@Service //i think its safe to remove this annotation
 public interface TaskService {
     public List<TaskDTO> getAllTask();
     public TaskDTO createTask(Tasks tasks);

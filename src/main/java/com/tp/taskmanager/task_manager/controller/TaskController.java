@@ -56,5 +56,8 @@ public class TaskController {
         return taskService.getUserTasksSortedByDueDate(id);
     }
 
+    public List<TaskDTO> getTaskByStatus(@PathVariable Long id, Tasks.TaskStatus status){
+        return taskService.getTasksByStatus(id,status);
+    }
 
 }
