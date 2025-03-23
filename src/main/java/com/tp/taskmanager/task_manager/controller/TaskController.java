@@ -50,4 +50,9 @@ public class TaskController {
     public TaskDTO updateTask(@PathVariable Long id, @Valid @RequestBody Tasks tasks){
         return taskService.updateTask(id,tasks);
     }
+
+    @GetMapping("/date/{id}")
+    public List<TaskDTO> getTaskByDate(@PathVariable Long id){
+        return taskService.getUserTasksSortedByDueDate(id);
+    }
 }

@@ -16,5 +16,6 @@ public interface TaskService {
     public TaskDTO getTasks(Long id);
     public List<TaskDTO> getTasksByUserId(long id);
     public List<TaskDTO> getTasksByStatus(long id, Tasks.TaskStatus status);
+    public List<TaskDTO> getUserTasksSortedByDueDate(long id);
 
 }

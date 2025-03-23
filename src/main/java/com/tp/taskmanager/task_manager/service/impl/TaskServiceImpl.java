@@ -90,6 +90,16 @@ public class TaskServiceImpl implements TaskService {
         return tasks.stream().map(this::convertToDTO).collect(Collectors.toList());
     }
 
+    @Override
+    public List<TaskDTO> getUserTasksSortedByDueDate(long id) {
+//        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+//        User user = userRepository.findByUserId(id)
+//                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        List<Tasks> tasks = taskRepository.findByUserIdOrderByDueDateAsc(id);
+        return tasks.stream().map(this::convertToDTO).collect(Collectors.toList());
+
+    }
+
     // Method to convert Task entity to TaskDTO
     public TaskDTO convertToDTO(Tasks task) {
         TaskDTO taskDTO = new TaskDTO();
@@ -98,6 +108,7 @@ public class TaskServiceImpl implements TaskService {
         taskDTO.setDescription(task.getDescription());
         taskDTO.setCompleted(task.isCompleted());
         taskDTO.setTaskStatus(TaskDTO.TaskStatus.valueOf(task.getTaskStatus().name()));
+        taskDTO.setCreatedAt(task.getCreatedAt());
 
         User user = task.getUser();
         UserDTO userDTO = new UserDTO();
