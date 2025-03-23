@@ -55,4 +55,6 @@ public class TaskController {
     public List<TaskDTO> getTaskByDate(@PathVariable Long id){
         return taskService.getUserTasksSortedByDueDate(id);
     }
+
+
 }
